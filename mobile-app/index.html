@@ -1,0 +1,1367 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f8f4">
+  <title>Part 5 Grammar Lab</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8f4;
+      --surface: #ffffff;
+      --surface-soft: #f2f6f2;
+      --ink: #20242a;
+      --muted: #66706d;
+      --line: #dce3dc;
+      --line-strong: #c8d3cb;
+      --teal: #13777b;
+      --blue: #315fb8;
+      --amber: #a96714;
+      --rose: #b94158;
+      --violet: #6b55a1;
+      --green: #25794d;
+      --slate: #4d5965;
+      --danger: #bc3f3f;
+      --shadow: 0 16px 34px rgba(39, 51, 47, 0.12);
+      --radius: 8px;
+      --bottom-bar: 82px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, rgba(19, 119, 123, 0.08), transparent 240px),
+        var(--bg);
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button,
+    select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    .app {
+      min-height: 100svh;
+      padding-bottom: calc(var(--bottom-bar) + env(safe-area-inset-bottom));
+    }
+
+    .app-bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+      border-bottom: 1px solid rgba(220, 227, 220, 0.86);
+      background: rgba(247, 248, 244, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: var(--radius);
+      background: #173e43;
+      color: #ffffff;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      overflow: hidden;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.15;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .subtitle {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .header-metric {
+      min-width: 76px;
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      text-align: right;
+    }
+
+    .header-metric strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .header-metric span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 850;
+    }
+
+    .mode-strip {
+      position: sticky;
+      top: calc(63px + env(safe-area-inset-top));
+      z-index: 18;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(220, 227, 220, 0.86);
+      background: rgba(247, 248, 244, 0.94);
+      backdrop-filter: blur(14px);
+    }
+
+    .mode-btn {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .mode-btn.active {
+      border-color: rgba(19, 119, 123, 0.25);
+      background: #dff1ed;
+      color: #0f5d61;
+      box-shadow: inset 0 -2px 0 rgba(19, 119, 123, 0.22);
+    }
+
+    .practice {
+      width: min(100%, 820px);
+      margin: 0 auto;
+      padding: 12px;
+    }
+
+    .session-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mini-stat {
+      min-height: 52px;
+      padding: 9px 8px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .mini-stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 850;
+    }
+
+    .question-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 10px 24px rgba(35, 46, 42, 0.08);
+    }
+
+    .question-top {
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .question-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .question-number {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .number {
+      display: grid;
+      min-width: 50px;
+      height: 36px;
+      place-items: center;
+      border-radius: var(--radius);
+      background: #173e43;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .badges {
+      display: flex;
+      min-width: 0;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .badge {
+      display: inline-flex;
+      min-height: 28px;
+      align-items: center;
+      border-radius: var(--radius);
+      padding: 0 9px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tone-teal { background: #dff1ed; color: var(--teal); }
+    .tone-blue { background: #e2ecfb; color: var(--blue); }
+    .tone-amber { background: #fff0d2; color: var(--amber); }
+    .tone-rose { background: #fde2e7; color: var(--rose); }
+    .tone-violet { background: #ece6f5; color: var(--violet); }
+    .tone-green { background: #ddf2e4; color: var(--green); }
+    .tone-slate { background: #edf0f3; color: var(--slate); }
+
+    .progress-text {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      overflow: hidden;
+      height: 8px;
+      margin-top: 12px;
+      border-radius: 999px;
+      background: #edf2ef;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--teal), #43a36e);
+      transition: width 0.18s ease;
+    }
+
+    .question-body {
+      padding: 14px;
+    }
+
+    .sentence {
+      min-height: 112px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-soft);
+      font-size: clamp(17px, 4.4vw, 21px);
+      font-weight: 780;
+      line-height: 1.56;
+    }
+
+    .blank {
+      display: inline-block;
+      min-width: 78px;
+      border-bottom: 3px solid rgba(19, 119, 123, 0.48);
+      color: transparent;
+      vertical-align: baseline;
+    }
+
+    .choices {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .choice {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      min-height: 58px;
+      overflow: hidden;
+      align-items: stretch;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #ffffff;
+      color: var(--ink);
+      text-align: left;
+      transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+    }
+
+    .choice:active {
+      transform: scale(0.99);
+    }
+
+    .choice-letter {
+      display: grid;
+      height: 100%;
+      place-items: center;
+      border-right: 1px solid var(--line);
+      background: #eef5f3;
+      color: var(--teal);
+      font-weight: 950;
+    }
+
+    .choice-text {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      padding: 13px 14px;
+      overflow-wrap: anywhere;
+      font-size: 16px;
+      font-weight: 820;
+      line-height: 1.35;
+    }
+
+    .choice.correct {
+      border-color: rgba(37, 121, 77, 0.38);
+      background: #edf8f1;
+    }
+
+    .choice.correct .choice-letter {
+      background: #25794d;
+      color: #ffffff;
+    }
+
+    .choice.wrong {
+      border-color: rgba(188, 63, 63, 0.36);
+      background: #fff0f0;
+    }
+
+    .choice.wrong .choice-letter {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    .choice.dimmed {
+      opacity: 0.62;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 12px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfb;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback-title {
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 950;
+    }
+
+    .feedback-text {
+      margin-top: 7px;
+      color: #3f4847;
+      font-size: 14px;
+      font-weight: 680;
+      line-height: 1.55;
+    }
+
+    .explain-grid {
+      display: grid;
+      gap: 9px;
+    }
+
+    .explain-block {
+      padding: 10px 11px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+    }
+
+    .explain-label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 950;
+      white-space: normal;
+    }
+
+    .explain-block strong {
+      color: var(--ink);
+    }
+
+    .empty-state {
+      padding: 30px 14px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 25;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1.1fr;
+      gap: 6px;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 -12px 26px rgba(24, 35, 31, 0.12);
+      backdrop-filter: blur(16px);
+    }
+
+    .bar-btn {
+      min-width: 0;
+      min-height: 56px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .bar-btn.primary {
+      border-color: rgba(19, 119, 123, 0.28);
+      background: var(--teal);
+      color: #ffffff;
+    }
+
+    .bar-btn.saved {
+      border-color: rgba(169, 103, 20, 0.28);
+      background: #fff2d8;
+      color: var(--amber);
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(20, 29, 28, 0.32);
+      padding-top: env(safe-area-inset-top);
+    }
+
+    .drawer-backdrop.open {
+      display: flex;
+    }
+
+    .drawer {
+      width: min(100%, 720px);
+      max-height: min(84svh, 760px);
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-bottom: 0;
+      border-radius: var(--radius) var(--radius) 0 0;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .drawer-head {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(14px);
+    }
+
+    .drawer-title {
+      font-size: 16px;
+      font-weight: 950;
+    }
+
+    .close-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      color: var(--ink);
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .drawer-body {
+      padding: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 950;
+    }
+
+    .select {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: #ffffff;
+      color: var(--ink);
+      padding: 0 12px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .action-btn {
+      min-height: 50px;
+      border-radius: var(--radius);
+      background: #edf3f1;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .action-btn.primary {
+      background: var(--teal);
+      color: #ffffff;
+    }
+
+    .action-btn.danger {
+      background: #fde7e7;
+      color: var(--danger);
+    }
+
+    .drawer-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .sheet-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .sheet-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .sheet-btn {
+      min-height: 52px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8faf8;
+      color: var(--slate);
+      font-weight: 950;
+    }
+
+    .sheet-btn.active {
+      border-color: rgba(19, 119, 123, 0.35);
+      background: #173e43;
+      color: #ffffff;
+    }
+
+    .sheet-btn.correct {
+      border-color: rgba(37, 121, 77, 0.32);
+      background: #e4f5eb;
+      color: var(--green);
+    }
+
+    .sheet-btn.wrong {
+      border-color: rgba(188, 63, 63, 0.32);
+      background: #fdeaea;
+      color: var(--danger);
+    }
+
+    .sheet-btn.active.correct,
+    .sheet-btn.active.wrong {
+      color: #ffffff;
+    }
+
+    .chart {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr) 34px;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .bar-track {
+      overflow: hidden;
+      height: 9px;
+      border-radius: 999px;
+      background: #eef2ef;
+    }
+
+    .bar-fill {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+    }
+
+    .bar-fill.tone-teal { background: var(--teal); }
+    .bar-fill.tone-blue { background: var(--blue); }
+    .bar-fill.tone-amber { background: var(--amber); }
+    .bar-fill.tone-rose { background: var(--rose); }
+    .bar-fill.tone-violet { background: var(--violet); }
+    .bar-fill.tone-green { background: var(--green); }
+    .bar-fill.tone-slate { background: var(--slate); }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(var(--bottom-bar) + 16px + env(safe-area-inset-bottom));
+      z-index: 50;
+      max-width: min(320px, calc(100vw - 32px));
+      transform: translateX(-50%) translateY(12px);
+      opacity: 0;
+      pointer-events: none;
+      border-radius: var(--radius);
+      background: #20242a;
+      color: #ffffff;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-weight: 850;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 380px) {
+      .practice {
+        padding-inline: 10px;
+      }
+
+      .mode-strip,
+      .session-strip,
+      .bottom-bar {
+        gap: 5px;
+      }
+
+      .bar-btn,
+      .mode-btn {
+        font-size: 12px;
+      }
+
+      .sheet-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 760px) {
+      .practice {
+        padding: 18px;
+      }
+
+      .question-body {
+        padding: 18px;
+      }
+
+      .choices {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="app-bar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">P5</div>
+        <div>
+          <h1>Part 5 Grammar Lab</h1>
+          <p class="subtitle" id="bankSubtitle">1000 questions · 34 sets</p>
+        </div>
+      </div>
+      <div class="header-metric" aria-label="accuracy">
+        <strong id="topAccuracy">0%</strong>
+        <span>ACCURACY</span>
+      </div>
+    </header>
+
+    <nav class="mode-strip" aria-label="학습 모드">
+      <button type="button" class="mode-btn active" data-mode="set">세트</button>
+      <button type="button" class="mode-btn" data-mode="random">랜덤</button>
+      <button type="button" class="mode-btn" data-mode="wrong">오답</button>
+      <button type="button" class="mode-btn" data-mode="bookmarked">저장</button>
+    </nav>
+
+    <main class="practice">
+      <section class="session-strip" aria-label="학습 현황">
+        <div class="mini-stat">
+          <strong id="answeredStat">0</strong>
+          <span>SOLVED</span>
+        </div>
+        <div class="mini-stat">
+          <strong id="accuracyStat">0%</strong>
+          <span>RATE</span>
+        </div>
+        <div class="mini-stat">
+          <strong id="wrongStat">0</strong>
+          <span>WRONG</span>
+        </div>
+        <div class="mini-stat">
+          <strong id="bookmarkStat">0</strong>
+          <span>SAVED</span>
+        </div>
+      </section>
+
+      <section class="question-card" aria-live="polite">
+        <div class="question-top">
+          <div class="question-meta">
+            <div class="question-number">
+              <span class="number" id="questionNumber">101</span>
+              <div class="badges">
+                <span class="badge tone-teal" id="categoryBadge">품사/어형</span>
+                <span class="badge tone-slate" id="difficultyBadge">실전</span>
+              </div>
+            </div>
+            <div class="progress-text" id="progressText">1 / 30</div>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <div class="question-body">
+          <div class="sentence" id="sentence"></div>
+          <div class="choices" id="choices"></div>
+          <div class="feedback" id="feedback">
+            <div class="feedback-title" id="feedbackTitle"></div>
+            <div class="feedback-text" id="feedbackText"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bottom-bar" aria-label="풀이 도구">
+      <button type="button" class="bar-btn" id="prevBtn">이전</button>
+      <button type="button" class="bar-btn" id="settingsBtn">설정</button>
+      <button type="button" class="bar-btn" id="sheetBtn">답안표</button>
+      <button type="button" class="bar-btn" id="bookmarkBtn">저장</button>
+      <button type="button" class="bar-btn primary" id="nextBtn">다음</button>
+    </footer>
+  </div>
+
+  <div class="drawer-backdrop" id="settingsDrawer" aria-hidden="true">
+    <section class="drawer" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="drawer-head">
+        <h2 class="drawer-title" id="settingsTitle">세션 설정</h2>
+        <button type="button" class="close-btn" data-close="settingsDrawer" aria-label="닫기">×</button>
+      </div>
+      <div class="drawer-body">
+        <div class="form-grid">
+          <label class="field">
+            <span class="label">SET</span>
+            <select class="select" id="setSelect"></select>
+          </label>
+          <label class="field">
+            <span class="label">CATEGORY</span>
+            <select class="select" id="categorySelect">
+              <option value="all">전체</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">LEVEL</span>
+            <select class="select" id="difficultySelect">
+              <option value="all">전체</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">SIZE</span>
+            <select class="select" id="sizeSelect">
+              <option value="30">30</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="action-btn primary" id="buildBtn">적용</button>
+          <button type="button" class="action-btn danger" id="resetBtn">초기화</button>
+        </div>
+
+        <div class="chart" id="chart"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="drawer-backdrop" id="sheetDrawer" aria-hidden="true">
+    <section class="drawer" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="drawer-head">
+        <h2 class="drawer-title" id="sheetTitle">답안표</h2>
+        <button type="button" class="close-btn" data-close="sheetDrawer" aria-label="닫기">×</button>
+      </div>
+      <div class="drawer-body">
+        <div class="sheet-summary">
+          <span id="sheetSummary">0문항</span>
+          <span id="sheetMode">Set 1</span>
+        </div>
+        <div class="sheet-grid" id="sheetGrid"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="part5-bank.js"></script>
+  <script>
+    const STORAGE_KEY = "part5_grammar_lab_mobile_v1";
+    const letters = ["A", "B", "C", "D"];
+    const bank = globalThis.PART5_BANK || [];
+    const meta = globalThis.PART5_META || { categories: {}, difficulties: {}, sets: 0, total: bank.length };
+
+    const els = {
+      bankSubtitle: document.getElementById("bankSubtitle"),
+      topAccuracy: document.getElementById("topAccuracy"),
+      setSelect: document.getElementById("setSelect"),
+      categorySelect: document.getElementById("categorySelect"),
+      difficultySelect: document.getElementById("difficultySelect"),
+      sizeSelect: document.getElementById("sizeSelect"),
+      buildBtn: document.getElementById("buildBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      questionNumber: document.getElementById("questionNumber"),
+      categoryBadge: document.getElementById("categoryBadge"),
+      difficultyBadge: document.getElementById("difficultyBadge"),
+      progressText: document.getElementById("progressText"),
+      progressFill: document.getElementById("progressFill"),
+      sentence: document.getElementById("sentence"),
+      choices: document.getElementById("choices"),
+      feedback: document.getElementById("feedback"),
+      feedbackTitle: document.getElementById("feedbackTitle"),
+      feedbackText: document.getElementById("feedbackText"),
+      sheetGrid: document.getElementById("sheetGrid"),
+      sheetSummary: document.getElementById("sheetSummary"),
+      sheetMode: document.getElementById("sheetMode"),
+      chart: document.getElementById("chart"),
+      answeredStat: document.getElementById("answeredStat"),
+      accuracyStat: document.getElementById("accuracyStat"),
+      wrongStat: document.getElementById("wrongStat"),
+      bookmarkStat: document.getElementById("bookmarkStat"),
+      prevBtn: document.getElementById("prevBtn"),
+      nextBtn: document.getElementById("nextBtn"),
+      bookmarkBtn: document.getElementById("bookmarkBtn"),
+      settingsBtn: document.getElementById("settingsBtn"),
+      sheetBtn: document.getElementById("sheetBtn"),
+      settingsDrawer: document.getElementById("settingsDrawer"),
+      sheetDrawer: document.getElementById("sheetDrawer"),
+      toast: document.getElementById("toast")
+    };
+
+    const state = loadState();
+    let session = [];
+    let currentIndex = 0;
+    let mode = "set";
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return {
+          answers: saved?.answers || {},
+          bookmarks: Array.isArray(saved?.bookmarks) ? saved.bookmarks : []
+        };
+      } catch {
+        return { answers: {}, bookmarks: [] };
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function seededShuffle(items, seed) {
+      const arr = items.slice();
+      let s = seed || 8849;
+      for (let i = arr.length - 1; i > 0; i--) {
+        s = (s * 48271) % 2147483647;
+        const j = s % (i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatMultiline(text) {
+      return escapeHtml(text).replaceAll("\n", "<br>");
+    }
+
+    function renderSentence(text) {
+      return escapeHtml(text).replace(/_{3,}|-{3,}|•/g, '<span class="blank">_____</span>');
+    }
+
+    function filledSentence(q, correctText) {
+      return q.q.replace(/_{3,}|-{3,}|•/g, correctText);
+    }
+
+    function explanationHtml(q, saved, correctIndex) {
+      const selected = saved ? q.choices[saved.choiceIndex] : null;
+      const correct = q.choices[correctIndex];
+      const translation = q.translation || filledSentence(q, correct.text);
+      const reason = q.detailedExplanation || q.explanation;
+      const concept = q.concept || "빈칸 앞뒤의 문장 성분과 의미 관계를 함께 확인해야 합니다.";
+      const distractors = q.distractorExplanation || "";
+      const blocks = [];
+
+      blocks.push(`
+        <div class="explain-block">
+          <span class="explain-label">해석</span>
+          ${escapeHtml(translation)}
+        </div>
+      `);
+
+      if (saved && !saved.correct) {
+        blocks.push(`
+          <div class="explain-block">
+            <span class="explain-label">내 선택이 틀린 이유</span>
+            ${escapeHtml(selected?.wrongReason || "선택한 답은 문맥과 구조에 맞지 않습니다.")}
+          </div>
+        `);
+      }
+
+      blocks.push(`
+        <div class="explain-block">
+          <span class="explain-label">정답 근거</span>
+          ${escapeHtml(reason)}<br><strong>정답: ${escapeHtml(correct.text)}</strong>
+        </div>
+      `);
+
+      blocks.push(`
+        <div class="explain-block">
+          <span class="explain-label">관련 문법 개념</span>
+          ${escapeHtml(concept)}
+        </div>
+      `);
+
+      if (distractors) {
+        blocks.push(`
+          <div class="explain-block">
+            <span class="explain-label">오답 포인트</span>
+            ${formatMultiline(distractors)}
+          </div>
+        `);
+      }
+
+      return `<div class="explain-grid">${blocks.join("")}</div>`;
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => els.toast.classList.remove("show"), 1500);
+    }
+
+    function openDrawer(id) {
+      closeDrawers();
+      const drawer = document.getElementById(id);
+      drawer.classList.add("open");
+      drawer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDrawers() {
+      [els.settingsDrawer, els.sheetDrawer].forEach(drawer => {
+        drawer.classList.remove("open");
+        drawer.setAttribute("aria-hidden", "true");
+      });
+    }
+
+    function populateControls() {
+      els.bankSubtitle.textContent = `${meta.total || bank.length} questions · ${meta.sets || 0} sets`;
+
+      for (let i = 1; i <= (meta.sets || 1); i++) {
+        const opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = `Set ${i}`;
+        els.setSelect.appendChild(opt);
+      }
+
+      Object.entries(meta.categories || {}).forEach(([key, value]) => {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = value.label;
+        els.categorySelect.appendChild(opt);
+      });
+
+      Object.entries(meta.difficulties || {}).forEach(([key, label]) => {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = label;
+        els.difficultySelect.appendChild(opt);
+      });
+    }
+
+    function filteredBank(source = bank) {
+      const category = els.categorySelect.value;
+      const difficulty = els.difficultySelect.value;
+      return source.filter(q => {
+        if (category !== "all" && q.category !== category) return false;
+        if (difficulty !== "all" && q.difficulty !== difficulty) return false;
+        return true;
+      });
+    }
+
+    function modeLabel() {
+      if (mode === "set") return `Set ${els.setSelect.value}`;
+      if (mode === "random") return `Random ${els.sizeSelect.value}`;
+      if (mode === "wrong") return "Wrong";
+      return "Saved";
+    }
+
+    function buildSession(keepDrawerOpen = false) {
+      const size = Number(els.sizeSelect.value);
+      let list = [];
+
+      if (mode === "set") {
+        const set = Number(els.setSelect.value);
+        list = bank.filter(q => q.set === set);
+      } else if (mode === "wrong") {
+        const ids = Object.entries(state.answers)
+          .filter(([, answer]) => answer?.correct === false)
+          .map(([id]) => id);
+        list = filteredBank(bank.filter(q => ids.includes(q.id)));
+      } else if (mode === "bookmarked") {
+        list = filteredBank(bank.filter(q => state.bookmarks.includes(q.id)));
+      } else {
+        list = seededShuffle(filteredBank(), Date.now() % 2147483647).slice(0, size);
+      }
+
+      session = list;
+      currentIndex = 0;
+      render();
+      if (!keepDrawerOpen) closeDrawers();
+    }
+
+    function currentQuestion() {
+      return session[currentIndex];
+    }
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      document.querySelectorAll("[data-mode]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.mode === mode);
+      });
+      buildSession(true);
+    }
+
+    function answerQuestion(choiceIndex) {
+      const q = currentQuestion();
+      if (!q) return;
+      const choice = q.choices[choiceIndex];
+      state.answers[q.id] = {
+        choiceIndex,
+        selected: choice.text,
+        correct: !!choice.correct,
+        answeredAt: new Date().toISOString()
+      };
+      saveState();
+      render();
+    }
+
+    function moveQuestion(direction) {
+      if (!session.length) return;
+      currentIndex = Math.min(Math.max(currentIndex + direction, 0), session.length - 1);
+      render();
+    }
+
+    function toggleBookmark() {
+      const q = currentQuestion();
+      if (!q) return;
+      const idx = state.bookmarks.indexOf(q.id);
+      if (idx >= 0) {
+        state.bookmarks.splice(idx, 1);
+        showToast("저장 해제");
+      } else {
+        state.bookmarks.push(q.id);
+        showToast("저장 완료");
+      }
+      saveState();
+      render();
+    }
+
+    function render() {
+      renderStats();
+      renderQuestion();
+      renderSheet();
+      renderChart();
+    }
+
+    function renderStats() {
+      const answers = Object.values(state.answers);
+      const answered = answers.length;
+      const correct = answers.filter(a => a.correct).length;
+      const wrong = answers.filter(a => a.correct === false).length;
+      const accuracy = answered ? Math.round((correct / answered) * 100) : 0;
+      els.answeredStat.textContent = answered;
+      els.accuracyStat.textContent = `${accuracy}%`;
+      els.topAccuracy.textContent = `${accuracy}%`;
+      els.wrongStat.textContent = wrong;
+      els.bookmarkStat.textContent = state.bookmarks.length;
+    }
+
+    function renderQuestion() {
+      const q = currentQuestion();
+      const total = session.length;
+
+      if (!q) {
+        els.questionNumber.textContent = "-";
+        els.categoryBadge.textContent = "EMPTY";
+        els.categoryBadge.className = "badge tone-slate";
+        els.difficultyBadge.textContent = "-";
+        els.progressText.textContent = "0 / 0";
+        els.progressFill.style.width = "0%";
+        els.sentence.innerHTML = '<div class="empty-state">조건에 맞는 문항이 없습니다.</div>';
+        els.choices.innerHTML = "";
+        els.feedback.classList.remove("show");
+        els.prevBtn.disabled = true;
+        els.nextBtn.disabled = true;
+        els.bookmarkBtn.disabled = true;
+        return;
+      }
+
+      const saved = state.answers[q.id];
+      const correctIndex = q.choices.findIndex(c => c.correct);
+
+      els.questionNumber.textContent = q.number;
+      els.categoryBadge.textContent = q.categoryLabel;
+      els.categoryBadge.className = `badge tone-${q.tone}`;
+      els.difficultyBadge.textContent = q.difficultyLabel;
+      els.difficultyBadge.className = "badge tone-slate";
+      els.progressText.textContent = `${currentIndex + 1} / ${total}`;
+      els.progressFill.style.width = `${((currentIndex + 1) / Math.max(total, 1)) * 100}%`;
+      els.sentence.innerHTML = renderSentence(q.q);
+
+      els.choices.innerHTML = q.choices.map((choice, idx) => {
+        let cls = "choice";
+        if (saved) {
+          if (choice.correct) cls += " correct";
+          if (saved.choiceIndex === idx && !choice.correct) cls += " wrong";
+          if (saved.choiceIndex !== idx && !choice.correct) cls += " dimmed";
+        }
+        return `
+          <button type="button" class="${cls}" data-choice="${idx}" aria-label="${letters[idx]} ${escapeHtml(choice.text)}">
+            <span class="choice-letter">${letters[idx]}</span>
+            <span class="choice-text">${escapeHtml(choice.text)}</span>
+          </button>
+        `;
+      }).join("");
+
+      els.choices.querySelectorAll(".choice").forEach(btn => {
+        btn.addEventListener("click", () => answerQuestion(Number(btn.dataset.choice)));
+      });
+
+      if (saved) {
+        els.feedback.classList.add("show");
+        els.feedbackTitle.textContent = saved.correct ? "정답" : `오답 · 정답 ${letters[correctIndex]}`;
+        els.feedbackText.innerHTML = explanationHtml(q, saved, correctIndex);
+      } else {
+        els.feedback.classList.remove("show");
+      }
+
+      els.prevBtn.disabled = currentIndex <= 0;
+      els.nextBtn.disabled = currentIndex >= total - 1;
+      els.bookmarkBtn.disabled = false;
+      const isSaved = state.bookmarks.includes(q.id);
+      els.bookmarkBtn.textContent = isSaved ? "저장됨" : "저장";
+      els.bookmarkBtn.classList.toggle("saved", isSaved);
+    }
+
+    function renderSheet() {
+      els.sheetSummary.textContent = `${session.length}문항`;
+      els.sheetMode.textContent = modeLabel();
+      els.sheetGrid.innerHTML = session.map((q, idx) => {
+        const answer = state.answers[q.id];
+        let cls = "sheet-btn";
+        if (idx === currentIndex) cls += " active";
+        if (answer?.correct) cls += " correct";
+        if (answer?.correct === false) cls += " wrong";
+        return `<button type="button" class="${cls}" data-index="${idx}">${q.number}</button>`;
+      }).join("");
+
+      els.sheetGrid.querySelectorAll(".sheet-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentIndex = Number(btn.dataset.index);
+          closeDrawers();
+          render();
+        });
+      });
+    }
+
+    function renderChart() {
+      const source = session.length ? session : filteredBank();
+      const counts = source.reduce((acc, q) => {
+        acc[q.category] = (acc[q.category] || 0) + 1;
+        return acc;
+      }, {});
+      const max = Math.max(...Object.values(counts), 1);
+      els.chart.innerHTML = Object.entries(meta.categories || {}).map(([key, item]) => {
+        const count = counts[key] || 0;
+        const width = Math.round((count / max) * 100);
+        return `
+          <div class="bar-row">
+            <span>${escapeHtml(item.label)}</span>
+            <span class="bar-track"><span class="bar-fill tone-${item.tone}" style="width:${width}%"></span></span>
+            <span>${count}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    document.querySelectorAll("[data-mode]").forEach(btn => {
+      btn.addEventListener("click", () => setMode(btn.dataset.mode));
+    });
+
+    document.querySelectorAll("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => closeDrawers());
+    });
+
+    [els.settingsDrawer, els.sheetDrawer].forEach(drawer => {
+      drawer.addEventListener("click", event => {
+        if (event.target === drawer) closeDrawers();
+      });
+    });
+
+    els.settingsBtn.addEventListener("click", () => openDrawer("settingsDrawer"));
+    els.sheetBtn.addEventListener("click", () => openDrawer("sheetDrawer"));
+    els.buildBtn.addEventListener("click", () => buildSession());
+    els.setSelect.addEventListener("change", () => mode === "set" && buildSession(true));
+    els.categorySelect.addEventListener("change", () => mode !== "set" && buildSession(true));
+    els.difficultySelect.addEventListener("change", () => mode !== "set" && buildSession(true));
+    els.sizeSelect.addEventListener("change", () => mode === "random" && buildSession(true));
+    els.prevBtn.addEventListener("click", () => moveQuestion(-1));
+    els.nextBtn.addEventListener("click", () => moveQuestion(1));
+    els.bookmarkBtn.addEventListener("click", toggleBookmark);
+    els.resetBtn.addEventListener("click", () => {
+      if (!confirm("학습 기록을 초기화할까요?")) return;
+      state.answers = {};
+      state.bookmarks = [];
+      saveState();
+      render();
+      showToast("초기화 완료");
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeDrawers();
+      if (event.key === "ArrowLeft") moveQuestion(-1);
+      if (event.key === "ArrowRight") moveQuestion(1);
+      if (/^[1-4]$/.test(event.key)) answerQuestion(Number(event.key) - 1);
+    });
+
+    populateControls();
+    buildSession(true);
+  </script>
+</body>
+</html>

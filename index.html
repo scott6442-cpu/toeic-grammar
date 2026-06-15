@@ -459,6 +459,31 @@
       line-height: 1.6;
     }
 
+    .explain-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .explain-block {
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .explain-label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 950;
+      white-space: normal;
+    }
+
+    .explain-block strong {
+      color: var(--ink);
+    }
+
     .nav-row {
       display: flex;
       justify-content: space-between;
@@ -838,8 +863,67 @@
         .replaceAll("'", "&#039;");
     }
 
+    function formatMultiline(text) {
+      return escapeHtml(text).replaceAll("\n", "<br>");
+    }
+
     function renderSentence(text) {
       return escapeHtml(text).replace(/_{3,}|-{3,}|•/g, '<span class="blank">_____</span>');
+    }
+
+    function filledSentence(q, correctText) {
+      return q.q.replace(/_{3,}|-{3,}|•/g, correctText);
+    }
+
+    function explanationHtml(q, saved, correctIndex) {
+      const selected = saved ? q.choices[saved.choiceIndex] : null;
+      const correct = q.choices[correctIndex];
+      const translation = q.translation || filledSentence(q, correct.text);
+      const reason = q.detailedExplanation || q.explanation;
+      const concept = q.concept || "빈칸 앞뒤의 문장 성분과 의미 관계를 함께 확인해야 합니다.";
+      const distractors = q.distractorExplanation || "";
+      const blocks = [];
+
+      blocks.push(`
+        <div class="explain-block">
+          <span class="explain-label">해석</span>
+          ${escapeHtml(translation)}
+        </div>
+      `);
+
+      if (saved && !saved.correct) {
+        blocks.push(`
+          <div class="explain-block">
+            <span class="explain-label">내 선택이 틀린 이유</span>
+            ${escapeHtml(selected?.wrongReason || "선택한 답은 문맥과 구조에 맞지 않습니다.")}
+          </div>
+        `);
+      }
+
+      blocks.push(`
+        <div class="explain-block">
+          <span class="explain-label">정답 근거</span>
+          ${escapeHtml(reason)}<br><strong>정답: ${escapeHtml(correct.text)}</strong>
+        </div>
+      `);
+
+      blocks.push(`
+        <div class="explain-block">
+          <span class="explain-label">관련 문법 개념</span>
+          ${escapeHtml(concept)}
+        </div>
+      `);
+
+      if (distractors) {
+        blocks.push(`
+          <div class="explain-block">
+            <span class="explain-label">오답 포인트</span>
+            ${formatMultiline(distractors)}
+          </div>
+        `);
+      }
+
+      return `<div class="explain-grid">${blocks.join("")}</div>`;
     }
 
     function showToast(message) {
@@ -1025,13 +1109,9 @@
       });
 
       if (saved) {
-        const selected = q.choices[saved.choiceIndex];
-        const correct = q.choices[correctIndex];
         els.feedback.classList.add("show");
         els.feedbackTitle.textContent = saved.correct ? "정답" : `오답 · 정답 ${letters[correctIndex]}`;
-        els.feedbackText.innerHTML = saved.correct
-          ? `${escapeHtml(q.explanation)}`
-          : `${escapeHtml(selected?.wrongReason || "선택한 답은 문맥과 구조에 맞지 않습니다.")}<br>${escapeHtml(q.explanation)}<br>정답: ${escapeHtml(correct.text)}`;
+        els.feedbackText.innerHTML = explanationHtml(q, saved, correctIndex);
       } else {
         els.feedback.classList.remove("show");
       }
