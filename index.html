@@ -465,15 +465,43 @@
     }
 
     .explain-block {
-      padding: 11px 12px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: #fff;
+      overflow: hidden;
+    }
+
+    .explain-block summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 42px;
+      padding: 11px 12px;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .explain-block summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .explain-block summary::after {
+      content: "+";
+      color: var(--muted);
+      font-weight: 950;
+    }
+
+    .explain-block[open] summary::after {
+      content: "-";
+    }
+
+    .explain-content {
+      padding: 0 12px 12px;
     }
 
     .explain-label {
-      display: block;
-      margin-bottom: 5px;
+      display: inline-flex;
       color: var(--ink);
       font-size: 12px;
       font-weight: 950;
@@ -482,6 +510,65 @@
 
     .explain-block strong {
       color: var(--ink);
+    }
+
+    .focus-card {
+      margin-bottom: 10px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fbfc;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.5;
+    }
+
+    .weakness-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .weakness-summary {
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-soft);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.5;
+    }
+
+    .weak-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .weak-name {
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .weak-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .weak-rate {
+      min-width: 54px;
+      text-align: right;
+      color: var(--danger);
+      font-size: 16px;
+      font-weight: 950;
     }
 
     .nav-row {
@@ -782,6 +869,11 @@
           <h2 class="panel-title">Pattern Mix</h2>
           <div class="chart" id="chart"></div>
         </section>
+
+        <section class="panel">
+          <h2 class="panel-title">Weakness Report</h2>
+          <div class="weakness-panel" id="weaknessPanel"></div>
+        </section>
       </aside>
     </main>
   </div>
@@ -823,6 +915,7 @@
       nextBtn: document.getElementById("nextBtn"),
       bookmarkBtn: document.getElementById("bookmarkBtn"),
       clearAnswerBtn: document.getElementById("clearAnswerBtn"),
+      weaknessPanel: document.getElementById("weaknessPanel"),
       toast: document.getElementById("toast")
     };
 
@@ -875,6 +968,28 @@
       return q.q.replace(/_{3,}|-{3,}|•/g, correctText);
     }
 
+    function studyFocus(q) {
+      const map = {
+        word_form: "품사 자리 판단: 빈칸 앞뒤를 보고 명사·형용사·부사·동사 중 필요한 역할을 먼저 확정하세요.",
+        connector: "연결어 판단: 빈칸 뒤가 절인지 구인지 확인한 뒤, 원인·양보·조건·목적 의미를 맞추세요.",
+        preposition: "전치사 판단: 뒤 명사구와 앞 표현이 시간·장소·대상·원인 중 어떤 관계인지 잡으세요.",
+        pronoun: "대명사 판단: 뒤 명사의 유무, 단수/복수, 소유격, 재귀 관계를 순서대로 확인하세요.",
+        comparison: "비교 표현 판단: than은 비교급, the나 범위 표현은 최상급 신호입니다.",
+        collocation: "어휘 결합 판단: 목적어가 실제로 요구하는 동사와 의미역을 확인하세요.",
+        verb_form: "동사 형태 판단: 조동사, 완료, 수동태, 전치사 뒤 구조가 동사 모양을 결정합니다."
+      };
+      return map[q.category] || "빈칸 앞뒤의 구조와 의미를 함께 확인하세요.";
+    }
+
+    function explainBlock(label, html, open = false) {
+      return `
+        <details class="explain-block" ${open ? "open" : ""}>
+          <summary><span class="explain-label">${escapeHtml(label)}</span></summary>
+          <div class="explain-content">${html}</div>
+        </details>
+      `;
+    }
+
     function explanationHtml(q, saved, correctIndex) {
       const selected = saved ? q.choices[saved.choiceIndex] : null;
       const correct = q.choices[correctIndex];
@@ -884,43 +999,18 @@
       const distractors = q.distractorExplanation || "";
       const blocks = [];
 
-      blocks.push(`
-        <div class="explain-block">
-          <span class="explain-label">해석</span>
-          ${escapeHtml(translation)}
-        </div>
-      `);
+      blocks.push(`<div class="focus-card">${escapeHtml(studyFocus(q))}</div>`);
+      blocks.push(explainBlock("해석", escapeHtml(translation), true));
 
       if (saved && !saved.correct) {
-        blocks.push(`
-          <div class="explain-block">
-            <span class="explain-label">내 선택이 틀린 이유</span>
-            ${escapeHtml(selected?.wrongReason || "선택한 답은 문맥과 구조에 맞지 않습니다.")}
-          </div>
-        `);
+        blocks.push(explainBlock("내 선택이 틀린 이유", escapeHtml(selected?.wrongReason || "선택한 답은 문맥과 구조에 맞지 않습니다."), true));
       }
 
-      blocks.push(`
-        <div class="explain-block">
-          <span class="explain-label">정답 근거</span>
-          ${escapeHtml(reason)}<br><strong>정답: ${escapeHtml(correct.text)}</strong>
-        </div>
-      `);
-
-      blocks.push(`
-        <div class="explain-block">
-          <span class="explain-label">관련 문법 개념</span>
-          ${escapeHtml(concept)}
-        </div>
-      `);
+      blocks.push(explainBlock("정답 근거", `${escapeHtml(reason)}<br><strong>정답: ${escapeHtml(correct.text)}</strong>`, true));
+      blocks.push(explainBlock("관련 문법 개념", escapeHtml(concept), false));
 
       if (distractors) {
-        blocks.push(`
-          <div class="explain-block">
-            <span class="explain-label">오답 포인트</span>
-            ${formatMultiline(distractors)}
-          </div>
-        `);
+        blocks.push(explainBlock("오답 포인트", formatMultiline(distractors), false));
       }
 
       return `<div class="explain-grid">${blocks.join("")}</div>`;
@@ -1046,6 +1136,7 @@
       renderQuestion();
       renderSheet();
       renderChart();
+      renderWeakness();
     }
 
     function renderStats() {
@@ -1157,6 +1248,58 @@
           </div>
         `;
       }).join("");
+    }
+
+    function weaknessRows() {
+      const byId = new Map(bank.map(q => [q.id, q]));
+      const rows = {};
+      Object.entries(state.answers).forEach(([id, answer]) => {
+        const q = byId.get(id);
+        if (!q) return;
+        const row = rows[q.category] || {
+          key: q.category,
+          label: q.categoryLabel,
+          tone: q.tone,
+          answered: 0,
+          wrong: 0
+        };
+        row.answered += 1;
+        if (answer.correct === false) row.wrong += 1;
+        rows[q.category] = row;
+      });
+      return Object.values(rows)
+        .filter(row => row.answered > 0)
+        .map(row => ({
+          ...row,
+          rate: Math.round((row.wrong / row.answered) * 100)
+        }))
+        .sort((a, b) => (b.rate - a.rate) || (b.wrong - a.wrong) || a.label.localeCompare(b.label, "ko"));
+    }
+
+    function renderWeakness() {
+      const rows = weaknessRows();
+      if (!rows.length) {
+        els.weaknessPanel.innerHTML = `
+          <div class="weakness-summary">문제를 풀면 카테고리별 오답률이 쌓입니다. 처음에는 랜덤 30문제를 풀고 약한 유형을 확인해 보세요.</div>
+        `;
+        return;
+      }
+      const worst = rows.find(row => row.wrong > 0) || rows[0];
+      const summary = worst.wrong
+        ? `${escapeHtml(worst.label)} 오답률이 ${worst.rate}%로 가장 높습니다. 다음 세션은 이 유형만 골라 짧게 복습하는 흐름이 좋습니다.`
+        : "아직 틀린 유형이 없습니다. 세트 풀이보다 랜덤 모드로 유형 섞기 연습을 해도 좋습니다.";
+      els.weaknessPanel.innerHTML = `
+        <div class="weakness-summary">${summary}</div>
+        ${rows.slice(0, 5).map(row => `
+          <div class="weak-row">
+            <div>
+              <div class="weak-name">${escapeHtml(row.label)}</div>
+              <div class="weak-meta">${row.wrong} wrong / ${row.answered} solved</div>
+            </div>
+            <div class="weak-rate">${row.rate}%</div>
+          </div>
+        `).join("")}
+      `;
     }
 
     document.querySelectorAll("[data-mode]").forEach(btn => {

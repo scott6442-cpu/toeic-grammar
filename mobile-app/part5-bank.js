@@ -362,7 +362,7 @@
     ["Though", ["Soon", "Ever", "Next"], "_____ she lacks political experience, Ms. Diaz has been impressive.", "양보절을 이끄는 Though가 필요합니다."],
     ["Because of", ["Because", "Although", "Therefore"], "_____ the heavy rain, the outdoor event was postponed.", "명사구 heavy rain 앞에는 전치사구 Because of가 필요합니다."],
     ["While", ["Despite", "Owing to", "According to"], "_____ the software is being updated, some features may be unavailable.", "절을 이끄는 시간 접속사 While이 필요합니다."],
-    ["Unless", ["Until", "During", "Despite"], "The order will not ship _____ payment is received.", "조건을 나타내는 Unless가 맞습니다."],
+    ["Unless", ["Because of", "During", "Despite"], "The order will not ship _____ payment is received.", "조건을 나타내는 Unless가 맞습니다."],
     ["When", ["During", "Despite", "Because of"], "_____ reviewing applications, Ms. Ng considers both education and experience.", "분사구문과 함께 시점을 나타내는 When이 자연스럽습니다."],
     ["As", ["Off", "Into", "Record"], "_____ requested, the invoice was sent to the accounting department.", "요청받은 대로라는 의미에는 As가 맞습니다."],
     ["Rather than", ["Because of", "Despite", "According to"], "_____ replace the system, the team upgraded its security features.", "대신 ~하다라는 의미에는 Rather than이 맞습니다."],
@@ -745,7 +745,7 @@
       ["Before", ["Prior to", "Despite", "According to"], "_____ you submit the application, review all required fields.", "뒤에 주어+동사가 있으므로 접속사 Before가 맞습니다."],
       ["Prior to", ["Before", "Although", "If"], "_____ submitting the application, review all required fields.", "뒤에 동명사구가 있으므로 Prior to가 필요합니다."],
       ["Once", ["Arrived", "To arrive", "Is arriving"], "_____ the client approves the design, production can begin.", "조건/시간절에는 Once가 맞습니다."],
-      ["Unless", ["Until", "During", "Despite"], "The order will not be released _____ payment is confirmed.", "조건을 나타내는 Unless가 필요합니다."],
+      ["Unless", ["Because of", "During", "Despite"], "The order will not be released _____ payment is confirmed.", "조건을 나타내는 Unless가 필요합니다."],
       ["as long as", ["or else", "as well as", "in between"], "The company will keep the service open _____ customers need it.", "조건을 나타내는 as long as가 맞습니다."],
       ["so that", ["instead of", "resulting from", "as"], "The deadline was extended _____ teams could review the data.", "목적절에는 so that이 필요합니다."],
       ["in case", ["whereas", "despite", "if not"], "Leave your phone number _____ the courier needs directions.", "만일을 대비하는 의미에는 in case가 맞습니다."]
@@ -914,6 +914,7 @@
     "a special order": "특별 주문",
     "the service contract": "서비스 계약",
     "the reimbursement form": "환급 신청서",
+    "the company's financial assets": "그 회사의 금융 자산",
     "the night": "밤새",
     "shipping charges": "배송료",
     "online orders": "온라인 주문",
@@ -1228,10 +1229,81 @@
   function optionForm(text) {
     const value = String(text || "").trim();
     const lower = value.toLowerCase();
+    const fixedForms = {
+      "accurate": "형용사",
+      "accuse": "동사",
+      "access": "명사/동사",
+      "also": "부사",
+      "alternatively": "담화부사",
+      "and": "등위접속사",
+      "as": "접속사/전치사",
+      "as if": "양태 접속사",
+      "as long as": "조건 접속사",
+      "as soon as": "시간 접속사",
+      "as well as": "병렬 전치사구/접속 표현",
+      "because of": "원인 전치사구",
+      "benefit": "명사/동사",
+      "benefits": "복수명사/3인칭 단수동사",
+      "both": "상관접속 한정사",
+      "brief": "형용사/동사",
+      "but": "등위접속사",
+      "close": "형용사/동사",
+      "depend": "동사",
+      "direct": "형용사/동사",
+      "either": "상관접속 한정사/부사",
+      "electrify": "동사",
+      "electronic": "형용사",
+      "electronics": "명사",
+      "even if": "양보 조건 접속사",
+      "even though": "양보 접속사",
+      "effort": "명사",
+      "enthusiasm": "명사",
+      "enthusiast": "명사",
+      "however": "접속부사",
+      "if not": "축약 조건 표현",
+      "in between": "전치사구/부사구",
+      "in case": "대비 목적 접속사",
+      "in order that": "목적 접속사",
+      "instead of": "대체 전치사구",
+      "lately": "부사",
+      "neither": "상관접속 한정사",
+      "not only": "상관접속 부사",
+      "not until": "시간 강조 접속 표현",
+      "now that": "이유 접속사",
+      "or": "등위접속사",
+      "or else": "조건/경고 접속 표현",
+      "private": "형용사",
+      "privatize": "동사",
+      "prompt": "형용사/동사",
+      "prompts": "복수명사/3인칭 단수동사",
+      "provided that": "조건 접속사",
+      "rather than": "대조/선택 접속 표현",
+      "regular": "형용사",
+      "regularize": "동사",
+      "resulting from": "분사구/원인 전치사적 표현",
+      "safe": "형용사",
+      "safety": "명사",
+      "save": "동사",
+      "so": "결과 등위접속사",
+      "so that": "목적 접속사",
+      "still": "부사",
+      "then": "부사",
+      "therefore": "접속부사",
+      "though": "양보 접속사",
+      "what": "복합관계대명사",
+      "whatever": "복합관계대명사",
+      "when": "시간 접속사",
+      "whenever": "복합관계부사",
+      "wherever": "복합관계부사",
+      "whichever": "복합관계대명사",
+      "whoever": "복합관계대명사",
+      "yet": "접속부사/등위접속사"
+    };
+    if (fixedForms[lower]) return fixedForms[lower];
     if (/^to\s+[a-z]+$/.test(lower)) return "to부정사";
     if (/ing$/.test(lower)) return "동명사/현재분사";
     if (/ly$/.test(lower)) return "부사";
-    if (/(tion|sion|ment|ness|ity|ship|ance|ence|al|ure)$/.test(lower)) return "명사";
+    if (/(tion|sion|ment|ness|ity|cy|ship|ance|ence|al|ure|or|er|ist)$/.test(lower)) return "명사";
     if (/(able|ible|ive|ous|ful|less|ic|al|ent|ant|ary|ory|ed)$/.test(lower)) return "형용사/분사";
     if (/^(he|she|they|we|you|it|him|her|them|us|his|their|its|your|our|hers|theirs|himself|herself|itself|themselves)$/.test(lower)) return "대명사";
     if (/^(because|although|while|unless|once|if|when|before|after|since|whereas|that|which|who|whoever|whether)$/.test(lower)) return "접속사";
@@ -1247,6 +1319,639 @@
       }
       return choice;
     });
+  }
+
+  function connectiveProfile(text) {
+    const key = String(text || "").trim().toLowerCase();
+    const profiles = {
+      "also": {
+        type: "부사",
+        takes: "완성된 절 안의 동사·형용사·문장 전체를 수식하는 자리",
+        meaning: "또한",
+        note: "also는 절과 절을 종속 관계로 묶지 못합니다. 빈칸 뒤에 주어+동사가 이어지더라도 접속사처럼 절을 이끌 수 없습니다."
+      },
+      "according to": {
+        type: "출처 전치사구",
+        takes: "명사구",
+        meaning: "~에 따르면",
+        note: "according to 뒤에는 규정·보고서·사람 같은 출처 명사구가 오며, 절이나 동사원형을 직접 이끌지 않습니다."
+      },
+      "along": {
+        type: "방향/동행 전치사",
+        takes: "명사구",
+        meaning: "~을 따라",
+        note: "along은 위치나 이동 방향을 나타내는 전치사라서 조건·이유·목적절을 만들 수 없습니다."
+      },
+      "among": {
+        type: "범위 전치사",
+        takes: "복수 명사구",
+        meaning: "~사이에/~중에서",
+        note: "among은 여러 대상 사이의 분포나 포함 관계를 나타내며 양보 의미를 만들지 않습니다."
+      },
+      "and": {
+        type: "등위접속사",
+        takes: "문법적으로 같은 성격의 단어·구·절",
+        meaning: "그리고",
+        note: "and는 병렬을 만들지만 조건·이유·양보 같은 종속 의미를 만들지 않습니다."
+      },
+      "another": {
+        type: "한정사/대명사",
+        takes: "단수 명사 또는 대명사 자리",
+        meaning: "또 다른 하나",
+        note: "another는 관계절을 이끄는 말이 아니라 명사 앞에서 '또 다른'을 뜻하는 한정사입니다."
+      },
+      "as": {
+        type: "접속사/전치사",
+        takes: "절 또는 명사구",
+        meaning: "~할 때/~이므로/~로서",
+        note: "as는 시간·이유·역할 의미가 중심이고, 목적을 나타내는 so that처럼 '할 수 있도록'의 의미를 직접 만들지는 않습니다."
+      },
+      "as if": {
+        type: "양태 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "마치 ~인 것처럼",
+        note: "as if 뒤에는 실제가 아니라 가정·비유의 절이 이어집니다."
+      },
+      "as long as": {
+        type: "조건 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~하는 한",
+        note: "as long as는 어떤 상태가 유지되는 조건을 제시합니다."
+      },
+      "as soon as": {
+        type: "시간 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~하자마자",
+        note: "as soon as는 한 사건 직후 다른 사건이 일어나는 시간 관계를 만듭니다."
+      },
+      "as well as": {
+        type: "병렬 전치사구/접속 표현",
+        takes: "명사구·동명사구 등 앞 항목과 같은 구조",
+        meaning: "~뿐만 아니라",
+        note: "as well as는 A as well as B처럼 같은 구조를 병렬로 더할 때 씁니다."
+      },
+      "aside from": {
+        type: "제외/추가 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~을 제외하고/~뿐 아니라",
+        note: "aside from 뒤에는 명사 성격의 표현이 오며, 목적절이나 이유절을 직접 만들지 않습니다."
+      },
+      "arrived": {
+        type: "과거동사/과거분사",
+        takes: "독립된 절의 동사 자리 또는 분사 자리",
+        meaning: "도착했다/도착한",
+        note: "arrived는 접속사가 아니므로 뒤의 절을 시간·조건절로 이끌 수 없습니다."
+      },
+      "because of": {
+        type: "원인 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~때문에",
+        note: "because of 뒤에는 the delay, receiving the request처럼 명사 성격의 표현이 와야 합니다."
+      },
+      "behind": {
+        type: "위치 전치사",
+        takes: "명사구",
+        meaning: "~뒤에",
+        note: "behind는 위치 관계를 나타내므로 양보나 원인 관계를 만들지 않습니다."
+      },
+      "but": {
+        type: "등위접속사",
+        takes: "문법적으로 같은 성격의 단어·구·절",
+        meaning: "그러나",
+        note: "but은 앞뒤를 대조하지만 조건절이나 이유절을 만들지는 않습니다."
+      },
+      "due to": {
+        type: "원인 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~때문에",
+        note: "due to 뒤에는 원인이 되는 명사구가 오며, 주어+동사가 있는 절을 바로 받을 수 없습니다."
+      },
+      "either": {
+        type: "상관접속 한정사/부사",
+        takes: "either A or B 구조의 첫 항목",
+        meaning: "둘 중 하나",
+        note: "either는 단독으로 절을 이끄는 접속사가 아니라 보통 either A or B 구조를 만듭니다."
+      },
+      "ever": {
+        type: "부사",
+        takes: "완성된 절 안의 동사·형용사 수식 자리",
+        meaning: "언젠가/도대체",
+        note: "ever는 접속사가 아니므로 뒤의 주어+동사를 양보절로 이끌 수 없습니다."
+      },
+      "even if": {
+        type: "양보 조건 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "설령 ~하더라도",
+        note: "even if는 가정적 양보 조건을 나타냅니다."
+      },
+      "even though": {
+        type: "양보 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~임에도 불구하고",
+        note: "even though는 실제 사실을 인정하면서 주절과 반대되는 결과를 연결합니다."
+      },
+      "however": {
+        type: "접속부사",
+        takes: "완성된 절과 쉼표 또는 세미콜론으로 연결되는 자리",
+        meaning: "그러나",
+        note: "however는 종속접속사처럼 문장 맨 앞에서 바로 절을 지배하지 않고, 보통 구두점과 함께 문장 간 전환을 표시합니다."
+      },
+      "if": {
+        type: "조건 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "만약 ~라면",
+        note: "if는 주절이 성립하는 조건을 제시합니다."
+      },
+      "if only": {
+        type: "강조 조건 접속 표현",
+        takes: "주어+동사가 있는 절",
+        meaning: "~하기만 하면",
+        note: "if only는 조건을 강하게 제한하거나 바람을 나타낼 때 쓰입니다."
+      },
+      "if not": {
+        type: "축약 조건 표현",
+        takes: "앞 문맥을 받은 생략 구조",
+        meaning: "그렇지 않다면",
+        note: "if not은 독립적인 절 앞에 새 접속사처럼 붙이기보다 앞 내용을 받아 줄이는 표현입니다."
+      },
+      "in spite of": {
+        type: "양보 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~에도 불구하고",
+        note: "in spite of는 despite처럼 전치사구라서 뒤에 주어+동사가 있는 절을 바로 받을 수 없습니다."
+      },
+      "into": {
+        type: "방향 전치사",
+        takes: "명사구",
+        meaning: "~안으로",
+        note: "into는 이동 방향이나 변화 대상을 나타내며 시간·조건 접속사를 대신할 수 없습니다."
+      },
+      "is arriving": {
+        type: "현재진행 동사구",
+        takes: "독립된 절의 동사 자리",
+        meaning: "도착하고 있다/도착할 예정이다",
+        note: "is arriving은 동사구이지 접속사가 아니므로 뒤 절을 시간·조건절로 이끌 수 없습니다."
+      },
+      "in addition to": {
+        type: "추가 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~에 더하여",
+        note: "in addition to 뒤에는 명사 성격의 표현이 오며, 절을 직접 이끌지는 않습니다."
+      },
+      "in between": {
+        type: "전치사구/부사구",
+        takes: "두 기준 사이의 위치·범위",
+        meaning: "그 사이에",
+        note: "in between은 조건이나 병렬 추가가 아니라 위치·범위의 중간을 나타냅니다."
+      },
+      "in contrast to": {
+        type: "대조 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~와 대조적으로",
+        note: "in contrast to 뒤에는 비교 기준이 되는 명사구가 옵니다."
+      },
+      "in order that": {
+        type: "목적 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~하기 위해서",
+        note: "in order that은 뒤 절이 앞 행동의 목적임을 나타냅니다."
+      },
+      "instead of": {
+        type: "대체 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~대신에",
+        note: "instead of 뒤에는 명사구나 -ing가 와야 하며, 주어+동사가 있는 절을 바로 받을 수 없습니다."
+      },
+      "neither": {
+        type: "상관접속 한정사",
+        takes: "neither A nor B 구조의 첫 항목",
+        meaning: "둘 다 아니다",
+        note: "neither는 보통 nor와 짝을 이루어 부정 병렬을 만듭니다."
+      },
+      "next": {
+        type: "부사/형용사",
+        takes: "시간 순서를 나타내는 수식 자리 또는 명사 앞",
+        meaning: "다음에/다음의",
+        note: "next는 절을 이끄는 접속사가 아니므로 뒤의 주어+동사를 양보절로 묶을 수 없습니다."
+      },
+      "not only": {
+        type: "상관접속 부사",
+        takes: "not only A but also B 구조",
+        meaning: "~뿐만 아니라",
+        note: "not only가 문두에 오면 조동사/동사 도치가 뒤따를 수 있습니다."
+      },
+      "not until": {
+        type: "시간 강조 접속 표현",
+        takes: "주어+동사가 있는 절",
+        meaning: "~하고 나서야 비로소",
+        note: "not until이 문두에 오면 뒤 주절에 도치가 일어납니다."
+      },
+      "now that": {
+        type: "이유 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "이제 ~이므로",
+        note: "now that은 이미 성립한 상황을 이유로 제시합니다."
+      },
+      "or": {
+        type: "등위접속사",
+        takes: "문법적으로 같은 성격의 단어·구·절",
+        meaning: "또는",
+        note: "or는 선택지를 병렬로 연결합니다."
+      },
+      "or else": {
+        type: "조건/경고 접속 표현",
+        takes: "앞 문장 뒤의 결과·경고",
+        meaning: "그렇지 않으면",
+        note: "or else는 앞 행동을 하지 않을 때 생기는 결과를 경고하듯 연결합니다."
+      },
+      "once": {
+        type: "시간/조건 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "일단 ~하면/~하자마자",
+        note: "once는 어떤 일이 완료된 뒤 다음 일이 가능해지는 시간·조건 관계를 만듭니다."
+      },
+      "owing to": {
+        type: "원인 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~때문에",
+        note: "owing to 뒤에는 원인이 되는 명사구가 오며, 주어+동사가 있는 절을 바로 받을 수 없습니다."
+      },
+      "provided that": {
+        type: "조건 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~라는 조건으로",
+        note: "provided that은 공식적인 조건을 제시합니다."
+      },
+      "rather than": {
+        type: "대조/선택 접속 표현",
+        takes: "동사원형·동명사·명사구 등 앞뒤가 맞는 병렬 구조",
+        meaning: "~하기보다는",
+        note: "rather than은 A가 아니라 B를 선택했다는 대조를 만듭니다."
+      },
+      "resulting from": {
+        type: "분사구/원인 전치사적 표현",
+        takes: "명사구",
+        meaning: "~에서 비롯된",
+        note: "resulting from 뒤에는 원인이 되는 명사구가 오며, 목적절을 만들지 않습니다."
+      },
+      "since": {
+        type: "이유/시간 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~이므로/~이래로",
+        note: "since는 이유나 시작 시점을 나타내며, '~인지 아닌지'를 묻는 명사절을 만들지는 않습니다."
+      },
+      "so": {
+        type: "결과 등위접속사",
+        takes: "앞 절의 결과가 되는 절",
+        meaning: "그래서",
+        note: "so는 원인 뒤의 결과를 연결합니다."
+      },
+      "so that": {
+        type: "목적 접속사",
+        takes: "주어+can/could/will/would 등 조동사가 있는 절",
+        meaning: "~할 수 있도록",
+        note: "so that은 뒤 절이 앞 행동의 목적임을 나타냅니다."
+      },
+      "soon": {
+        type: "부사",
+        takes: "완성된 절 안의 시간 부사 자리",
+        meaning: "곧",
+        note: "soon은 시간 부사라서 뒤의 절을 양보절이나 조건절로 이끌 수 없습니다."
+      },
+      "still": {
+        type: "부사",
+        takes: "동사·형용사·문장 전체를 수식하는 자리",
+        meaning: "여전히/그럼에도",
+        note: "still은 절을 이끄는 접속사가 아니라 부사입니다."
+      },
+      "that": {
+        type: "관계대명사/명사절 접속사",
+        takes: "선행사를 수식하는 관계절 또는 완전한 명사절",
+        meaning: "~하는/ ~라는 것",
+        note: "that은 전치사 to 바로 뒤에서 '누구든 ~하는 사람'이라는 명사 역할을 만들 수 없습니다."
+      },
+      "then": {
+        type: "부사",
+        takes: "완성된 절 안의 시간·순서 자리",
+        meaning: "그때/그러면",
+        note: "then은 조건절을 이끄는 접속사가 아니라 결과나 순서를 나타내는 부사입니다."
+      },
+      "there": {
+        type: "부사/유도부사",
+        takes: "완성된 절 안의 장소 부사 자리 또는 there is/are 구조",
+        meaning: "거기에",
+        note: "there는 관계절을 이끄는 관계대명사가 아니므로 명사를 수식하는 절의 주어 역할을 할 수 없습니다."
+      },
+      "therefore": {
+        type: "접속부사",
+        takes: "완성된 절과 쉼표 또는 세미콜론으로 연결되는 자리",
+        meaning: "그러므로",
+        note: "therefore는 종속접속사가 아니라 문장 간 논리 전환을 표시하는 접속부사입니다."
+      },
+      "to arrive": {
+        type: "to부정사",
+        takes: "목적·예정·수식 역할의 구",
+        meaning: "도착하기 위해/도착할",
+        note: "to arrive는 구를 만들 뿐 접속사처럼 뒤 절을 이끌 수 없습니다."
+      },
+      "they": {
+        type: "인칭대명사",
+        takes: "절 안의 주어 자리",
+        meaning: "그들은",
+        note: "they는 대명사라서 뒤의 관계절을 이끌 수 없고, 단수 동사 submits와도 맞지 않습니다."
+      },
+      "versus": {
+        type: "대립 전치사",
+        takes: "명사구",
+        meaning: "~대/~와 비교하여",
+        note: "versus는 두 대상을 맞세워 비교할 때 쓰며 양보 의미를 만들지 않습니다."
+      },
+      "though": {
+        type: "양보 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "비록 ~이지만",
+        note: "though는 although와 비슷하게 양보절을 만듭니다."
+      },
+      "through": {
+        type: "전치사",
+        takes: "명사구",
+        meaning: "~을 통해/~내내",
+        note: "through는 전치사라서 사람·사물을 수식하는 관계절을 이끌 수 없습니다."
+      },
+      "what": {
+        type: "복합관계대명사",
+        takes: "불완전한 절",
+        meaning: "~하는 것",
+        note: "what은 사물을 가리키므로 사람을 뜻하는 '누구든 ~하는 사람' 자리에는 맞지 않습니다."
+      },
+      "whatever": {
+        type: "복합관계대명사",
+        takes: "불완전한 절",
+        meaning: "무엇이든",
+        note: "whatever는 사물·내용을 포괄합니다."
+      },
+      "when": {
+        type: "시간 접속사",
+        takes: "주어+동사가 있는 절 또는 -ing 축약구",
+        meaning: "~할 때",
+        note: "when은 시간 관계를 나타냅니다."
+      },
+      "whether": {
+        type: "명사절 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~인지 아닌지",
+        note: "whether는 determine, decide, know 같은 동사의 목적어가 되는 명사절을 이끕니다."
+      },
+      "whenever": {
+        type: "복합관계부사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~할 때마다",
+        note: "whenever는 반복되는 시간 조건을 나타냅니다."
+      },
+      "wherever": {
+        type: "복합관계부사",
+        takes: "주어+동사가 있는 절",
+        meaning: "어디에서든",
+        note: "wherever는 장소가 어디이든 상관없다는 의미를 만듭니다."
+      },
+      "whichever": {
+        type: "복합관계대명사",
+        takes: "불완전한 절",
+        meaning: "어느 것이든",
+        note: "whichever는 둘 이상 중 어느 선택지든 상관없다는 의미를 만듭니다."
+      },
+      "while": {
+        type: "시간/대조 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~하는 동안 / 반면에",
+        note: "while은 뒤 절의 동작이 진행되는 동안 주절 상황이 일어난다는 시간 관계를 만들 수 있습니다."
+      },
+      "who": {
+        type: "관계대명사",
+        takes: "사람 선행사를 수식하는 불완전한 절",
+        meaning: "~하는 사람",
+        note: "who는 앞의 사람 명사를 수식하는 관계절을 만듭니다."
+      },
+      "whoever": {
+        type: "복합관계대명사",
+        takes: "불완전한 절",
+        meaning: "~하는 사람은 누구든",
+        note: "whoever는 선행사 없이 'anyone who'의 뜻을 만들며, 뒤 절에서 주어 역할을 할 수 있습니다."
+      },
+      "unless": {
+        type: "조건 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~하지 않는다면 / ~하지 않는 한",
+        note: "unless S+V는 if S does not V와 비슷하게 조건을 만듭니다."
+      },
+      "in case": {
+        type: "대비·예방 목적의 종속접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~할 경우에 대비해서",
+        note: "in case S+V는 실제 발생 여부와 상관없이 미리 대비한다는 뜻을 만듭니다."
+      },
+      "despite": {
+        type: "양보 전치사",
+        takes: "명사구 또는 동명사구",
+        meaning: "~에도 불구하고",
+        note: "despite 뒤에는 절을 바로 쓰지 못합니다. despite the delay, despite receiving처럼 써야 합니다."
+      },
+      "during": {
+        type: "시간 전치사",
+        takes: "명사구",
+        meaning: "~동안",
+        note: "during 뒤에는 during the meeting처럼 기간을 나타내는 명사구가 옵니다. 주어+동사 절은 직접 받을 수 없습니다."
+      },
+      "because of": {
+        type: "원인 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~때문에",
+        note: "because of 뒤에는 명사구가 와야 하고, because처럼 절을 직접 이끌 수 없습니다."
+      },
+      "whereas": {
+        type: "대조 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~인 반면에",
+        note: "whereas는 두 사실을 대조할 때 쓰며, '혹시 ~할 경우에 대비해'라는 예방 목적을 만들지 않습니다."
+      },
+      "if not": {
+        type: "축약 조건 표현",
+        takes: "앞 내용의 생략을 전제로 한 구/절",
+        meaning: "그렇지 않다면",
+        note: "if not은 독립된 연결어처럼 아무 절 앞에 붙이기보다 앞 문맥을 받아 '그렇지 않으면'으로 씁니다."
+      },
+      "although": {
+        type: "양보 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "비록 ~이지만",
+        note: "although는 양보 관계를 만들고 조건·대비·원인 의미를 만들지 않습니다."
+      },
+      "because": {
+        type: "원인 접속사",
+        takes: "주어+동사가 있는 절",
+        meaning: "~이기 때문에",
+        note: "because는 이유를 제시하며 양보·대조·예방 목적을 만들지 않습니다."
+      },
+      "until": {
+        type: "시간 접속사/전치사",
+        takes: "절 또는 명사구",
+        meaning: "~할 때까지",
+        note: "until은 시간의 종료점을 나타내며 조건 자체를 뜻하지는 않습니다."
+      },
+      "prior to": {
+        type: "시간 전치사구",
+        takes: "명사구 또는 동명사구",
+        meaning: "~전에",
+        note: "prior to 뒤에는 submitting처럼 동명사구나 명사구가 옵니다."
+      },
+      "before": {
+        type: "시간 접속사/전치사",
+        takes: "절 또는 명사구/동명사구",
+        meaning: "~전에",
+        note: "before는 뒤 구조에 따라 접속사 또는 전치사로 쓰입니다."
+      },
+      "how": {
+        type: "의문부사/명사절 접속사",
+        takes: "주어+동사가 있는 명사절",
+        meaning: "어떻게",
+        note: "how는 방법을 묻거나 설명하는 명사절을 만들며, 명령문 두 개를 병렬로 잇는 등위접속사가 아닙니다."
+      },
+      "within": {
+        type: "범위/시간 전치사",
+        takes: "명사구",
+        meaning: "~이내에/~안에서",
+        note: "within은 전치사이므로 뒤에 기간·범위 명사구가 와야 하고, 동사원형 구를 병렬로 연결하지 못합니다."
+      },
+      "without": {
+        type: "부정 전치사",
+        takes: "명사구 또는 동명사구",
+        meaning: "~없이",
+        note: "without은 전치사라서 뒤에 -ing나 명사구를 받을 수 있지만, 의미는 '~전에'가 아니라 '~없이'입니다."
+      },
+      "yet": {
+        type: "접속부사/등위접속사",
+        takes: "완성된 절 또는 대조되는 병렬절",
+        meaning: "그러나/아직",
+        note: "yet은 대조 전환이나 '아직'의 뜻을 나타내며, 반복 조건 '~할 때마다'를 만들지 않습니다."
+      }
+    };
+    return profiles[key] || {
+      type: optionForm(text),
+      takes: "문맥에 맞는 절 또는 구",
+      meaning: "문맥에 따라 달라짐",
+      note: `${text}의 품사와 뒤따르는 구조를 확인해야 합니다.`
+    };
+  }
+
+  function followingAfterBlank(q) {
+    return q.q.replace(/^.*?_____\s*/, "").replace(/[.?!]$/, "").trim();
+  }
+
+  function followingStructure(q) {
+    const after = followingAfterBlank(q);
+    if (/^(?:the|a|an|this|that|these|those|his|her|their|our|your|its)\s+[a-z][\w.'-]*\s+(?:is|are|was|were|has|have|had|can|could|will|would|should|must|may|might|do|does|did|needs?|receives?|arrived|approves?|submits?|participates?|travels?|collects?|displays?|lacks?|comes?|increased|remained|chose|understand|use|open|review)\b/i.test(after)) return "주어+동사가 있는 절";
+    if (/^[a-z][\w.'-]*\s+(?:is|are|was|were|has|have|had|can|could|will|would|should|must|may|might|do|does|did|needs?|receives?|arrived|approves?|submits?|participates?|travels?|collects?|displays?|lacks?|comes?|increased|remained|chose|understand|use|open|review)\b/i.test(after)) return "주어+동사가 있는 절";
+    if (/^[a-z]+ing\b/i.test(after)) return "동명사구";
+    if (/^(the|a|an|this|that|these|those|his|her|their|our|your|its)\b/i.test(after) && !/\b(is|are|was|were|has|have|had|needs|need|receives|arrived|approves|is confirmed|was confirmed)\b/i.test(after)) return "명사구";
+    if (/\b(is|are|was|were|has|have|had|needs|need|receives|arrived|approves|confirmed|is confirmed|was confirmed|can|will|should|must)\b/i.test(after)) return "주어+동사가 있는 절";
+    return "구/절";
+  }
+
+  function connectiveWrongReason(q, value, answer) {
+    const selected = connectiveProfile(value);
+    const correct = connectiveProfile(answer);
+    const after = followingAfterBlank(q);
+    const structure = followingStructure(q);
+    const sameStructure = selected.takes === correct.takes;
+    const structureComment = sameStructure
+      ? `둘 다 비슷한 구조를 받을 수 있어 보이지만, 이 문항의 핵심은 의미 관계입니다.`
+      : `${value}가 보통 받는 구조는 '${selected.takes}'이고, 정답 ${answer}가 받는 구조는 '${correct.takes}'입니다.`;
+    return `${value}는 ${selected.type}입니다. ${selected.note} 빈칸 뒤는 '${after}'로, ${structure}입니다. ${structureComment} 이 문장에는 '${correct.meaning}'의 의미가 필요하므로 ${answer}(${correct.type})가 맞습니다.`;
+
+    if (String(value).toLowerCase() === "despite") {
+      return `${value}는 ${selected.type}로, 뒤에 명사구나 동명사구를 받습니다. 지금 빈칸 뒤는 '${after}'처럼 ${structure}이므로 despite가 직접 이끌 수 없습니다. 뜻도 '${selected.meaning}'라서 대비·조건 의미가 아니라 양보 의미입니다. 여기서는 ${answer}(${correct.type})가 '${correct.meaning}'의 의미로 절을 연결해야 합니다.`;
+    }
+    if (String(value).toLowerCase() === "during") {
+      return `${value}는 ${selected.type}입니다. during the meeting처럼 기간 명사구 앞에 쓰는 전치사라서 '${after}' 같은 ${structure} 앞에는 맞지 않습니다. 또한 during은 조건이 아니라 시간 배경을 나타내므로, 주절의 성립 조건을 만드는 ${answer}가 필요합니다.`;
+    }
+    if (String(value).toLowerCase() === "because of") {
+      return `${value}는 ${selected.type}라서 뒤에 명사구가 와야 합니다. '${after}'는 ${structure}이므로 because of가 바로 받을 수 없습니다. 절을 이끌어 조건을 만드는 ${answer}가 필요합니다.`;
+    }
+    if (String(value).toLowerCase() === "whereas") {
+      return `${value}는 ${selected.type}로 두 절을 대조할 때 씁니다. '${after}'라는 절을 받을 수는 있지만 의미가 '${selected.meaning}'라서, 전화번호를 남기는 목적이 '배송 기사에게 길 안내가 필요할 경우에 대비해서'라는 뜻과 맞지 않습니다. 대비 목적은 ${answer}입니다.`;
+    }
+    if (String(value).toLowerCase() === "if not") {
+      return `${value}는 ${selected.type}입니다. 이 표현은 앞 문맥을 받아 '그렇지 않다면'으로 쓰는 축약형이라 '${after}' 앞에 붙이면 '그렇지 않다면 배송 기사가 길 안내를 필요로 한다'처럼 어색한 조건절이 됩니다. 이 문장은 만일의 상황에 대비해 전화번호를 남기라는 뜻이므로 ${answer}가 필요합니다.`;
+    }
+    if (String(value).toLowerCase() === "until") {
+      return `${value}는 ${selected.type}로 시간의 끝점을 나타냅니다. 선택지로 보이면 그럴듯하지만, 이 문항은 '결제가 확인되지 않으면 출고하지 않는다'는 조건을 묻는 구조로 설계되어 있습니다. 조건 자체를 명확히 나타내는 ${answer}가 정답입니다.`;
+    }
+    if (answer === "Prior to") {
+      return `${value}는 ${selected.type}입니다. 빈칸 뒤는 '${after}'라는 ${structure}이고, 여기서는 '제출하기 전에'라는 시간 전치사구가 필요합니다. ${answer}는 ${correct.type}라서 동명사구 submitting the application을 받을 수 있습니다.`;
+    }
+
+    return `${value}는 ${selected.type}이고 보통 ${selected.takes}를 받습니다. 하지만 이 문장의 빈칸 뒤는 '${after}'라는 ${structure}이며, 필요한 의미는 '${correct.meaning}'입니다. 따라서 ${answer}(${correct.type})가 구조와 의미를 동시에 만족합니다.`;
+  }
+
+  function prepositionProfile(text) {
+    const key = String(text || "").trim().toLowerCase();
+    const profiles = {
+      about: ["관련/주제 전치사", "~에 관하여", "report about the issue처럼 주제나 관련 대상을 표시합니다."],
+      above: ["위치 전치사", "~보다 위에", "물리적·수치적 위치가 위쪽임을 나타냅니다."],
+      across: ["이동/위치 전치사", "~을 가로질러", "공간을 가로지르는 이동이나 반대편 위치를 나타냅니다."],
+      after: ["시간 전치사/접속사", "~후에", "사건이나 시점이 먼저 일어난 뒤의 관계를 나타냅니다."],
+      against: ["대립/접촉 전치사", "~에 반대하여/~에 기대어", "반대 대상이나 맞닿는 대상을 표시합니다."],
+      along: ["방향 전치사", "~을 따라", "길·강·복도처럼 선형 공간을 따라가는 움직임을 나타냅니다."],
+      alongside: ["위치/동반 전치사", "~옆에/~와 함께", "나란히 있는 위치나 함께 진행되는 대상을 나타냅니다."],
+      among: ["범위 전치사", "~사이에/~중에서", "셋 이상의 대상 사이의 분포나 포함 관계를 나타냅니다."],
+      around: ["위치 전치사", "~주위에", "둘레나 주변 위치를 나타냅니다."],
+      as: ["역할 전치사", "~로서", "직책·역할·자격을 나타냅니다."],
+      at: ["지점 전치사", "~에", "정확한 장소·시각·지점을 찍습니다."],
+      beside: ["위치 전치사", "~옆에", "가까운 옆 위치를 나타냅니다."],
+      between: ["범위 전치사", "~사이에", "두 대상 사이의 관계, 특히 between A and B 구조를 만듭니다."],
+      beyond: ["범위 전치사", "~을 넘어서", "한계나 범위를 넘어감을 나타냅니다."],
+      by: ["기한/수단 전치사", "~까지/~에 의해", "마감 시한이나 행위의 수단·행위자를 나타냅니다."],
+      during: ["기간 전치사", "~동안", "during the meeting처럼 특정 기간 명사구를 받습니다."],
+      except: ["제외 전치사", "~을 제외하고", "전체에서 일부를 빼는 관계를 만듭니다."],
+      excepting: ["제외 전치사", "~을 제외하고", "except와 비슷하게 예외 대상을 표시합니다."],
+      following: ["시간 전치사", "~후에", "following extensive renovations처럼 사건 이후를 나타냅니다."],
+      for: ["기간/목적 전치사", "~동안/~을 위해", "숫자 기간과 함께 지속 시간을 나타내거나 목적 대상을 표시합니다."],
+      from: ["출발점 전치사", "~부터/~에서", "시간·장소·출처의 시작점을 나타냅니다."],
+      in: ["범위/분야 전치사", "~안에/~에", "분야·공간·소속 범위를 나타내며 invest in처럼 동사와 결합하기도 합니다."],
+      including: ["포함 전치사", "~을 포함하여", "가격·범위 안에 들어가는 항목을 덧붙입니다."],
+      inside: ["내부 위치 전치사", "~안에", "공간 내부에 있음을 나타냅니다."],
+      into: ["방향 전치사", "~안으로", "밖에서 안으로 들어가는 이동이나 변화 방향을 나타냅니다."],
+      near: ["근접 위치 전치사", "~근처에", "가까운 위치를 나타냅니다."],
+      of: ["소속/부분 전치사", "~의", "소유·부분·성질의 관계를 만듭니다."],
+      on: ["접촉/상태 전치사", "~위에/~상태로", "표면 접촉이나 on sale 같은 고정 상태 표현을 만듭니다."],
+      onto: ["방향 전치사", "~위로", "어떤 표면 위로 이동해 올라감을 나타냅니다."],
+      past: ["이동 전치사", "~을 지나서", "지점을 지나쳐 이동하는 방향을 나타냅니다."],
+      since: ["시작 시점 전치사", "~이래로", "현재완료와 함께 시작 시점을 나타냅니다."],
+      through: ["통과/수단 전치사", "~을 통해", "통로·절차·수단을 거쳐 감을 나타냅니다."],
+      throughout: ["전체 기간/범위 전치사", "~내내/~전역에", "기간이나 공간 전체에 걸쳐 계속됨을 나타냅니다."],
+      to: ["방향/대상 전치사", "~로/~에게", "이동의 도착점이나 전달 대상을 나타냅니다."],
+      toward: ["방향/목표 전치사", "~쪽으로/~을 향해", "물리적 방향이나 예산·노력의 목표를 나타냅니다."],
+      under: ["위치/조건 전치사", "~아래에/~하에", "아래 위치나 특정 조건·제도 아래 있음을 나타냅니다."],
+      until: ["종료 시점 전치사", "~까지", "어떤 상태가 끝나는 시점을 나타냅니다."],
+      with: ["동반/수단 전치사", "~와 함께/~을 가지고", "동반 대상이나 도구·수단을 표시합니다."],
+      within: ["기한/범위 전치사", "~이내에/~안에서", "정해진 기간이나 범위 안쪽을 뜻합니다."],
+      without: ["부정 전치사", "~없이", "필요한 대상이 없는 상태를 나타냅니다."],
+      "according to": ["출처 전치사구", "~에 따르면", "규정·보고서·사람 같은 정보 출처를 표시합니다."],
+      "because of": ["원인 전치사구", "~때문에", "원인이 되는 명사구를 받아 결과의 이유를 나타냅니다."],
+      "in addition to": ["추가 전치사구", "~에 더하여", "이미 있는 대상에 추가되는 항목을 나타냅니다."],
+      "in contrast to": ["대조 전치사구", "~와 대조적으로", "비교 기준이 되는 명사구와 반대되는 내용을 연결합니다."],
+      "owing to": ["원인 전치사구", "~때문에", "원인이 되는 명사구를 받는 공식적인 표현입니다."],
+      "prior to": ["시간 전치사구", "~전에", "명사구나 동명사구 앞에서 선후 관계를 나타냅니다."]
+    };
+    const [type, meaning, note] = profiles[key] || ["전치사/전치사구", "문맥상 관계", `${text}가 만드는 시간·장소·대상 관계를 확인해야 합니다.`];
+    return { type, meaning, note };
+  }
+
+  function prepositionWrongReason(q, value, answer) {
+    const selected = prepositionProfile(value);
+    const correct = prepositionProfile(answer);
+    const after = followingAfterBlank(q);
+    return `${value}는 ${selected.type}로, 기본 의미는 '${selected.meaning}'입니다. ${selected.note} 빈칸 뒤 명사구는 '${after}'이고, 이 문장에서는 '${correct.meaning}' 관계가 필요합니다. 따라서 ${answer}(${correct.type})가 앞 표현과 뒤 명사구를 가장 정확하게 연결합니다.`;
   }
 
   function collocationObject(q) {
@@ -1329,23 +2034,23 @@
     }
 
     if (value === "make" && answer === "place") {
-      return `${inserted}는 직역하면 '${objectKo}을/를 만들다'에 가깝습니다. 주문을 '넣다/하다'는 영어에서 make가 아니라 place an order라는 고정 타동사 결합을 씁니다. 따라서 ${correctPair}가 맞습니다.`;
+      return `${inserted}는 직역하면 '${objectMarked} 만들다'에 가깝습니다. 주문을 '넣다/하다'는 영어에서 make가 아니라 place an order라는 고정 타동사 결합을 씁니다. 따라서 ${correctPair}가 맞습니다.`;
     }
 
     if (value === "do" && answer === "place") {
-      return `${inserted}는 '${objectKo}을/를 하다'라는 매우 일반적인 표현이라 주문을 넣는다는 업무 표현을 만들지 못합니다. order는 place an order로 결합하므로 ${correctPair}가 필요합니다.`;
+      return `${inserted}는 '${objectMarked} 하다'라는 매우 일반적인 표현이라 주문을 넣는다는 업무 표현을 만들지 못합니다. order는 place an order로 결합하므로 ${correctPair}가 필요합니다.`;
     }
 
     if (value === "set" && answer === "place") {
-      return `${inserted}는 '${objectKo}을/를 설정하다/놓다'라는 의미가 되어 주문을 제출한다는 뜻이 아닙니다. 주문을 넣는다는 뜻은 ${correctPair}로 표현합니다.`;
+      return `${inserted}는 '${objectMarked} 설정하다/놓다'라는 의미가 되어 주문을 제출한다는 뜻이 아닙니다. 주문을 넣는다는 뜻은 ${correctPair}로 표현합니다.`;
     }
 
     if (value === "repeat" && answer === "renew") {
-      return `${inserted}는 '${objectKo}을/를 반복하다'라는 뜻입니다. 계약은 같은 행동을 반복하는 것이 아니라 기간을 연장해 효력을 다시 살리는 것이므로 renew the contract가 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 반복하다'라는 뜻입니다. 계약은 같은 행동을 반복하는 것이 아니라 기간을 연장해 효력을 다시 살리는 것이므로 renew the contract가 맞습니다.`;
     }
 
     if (value === "return" && answer === "renew") {
-      return `${inserted}는 '${objectKo}을/를 돌려주다/반환하다'라는 뜻입니다. 계약 만료 전에 해야 하는 일은 반환이 아니라 갱신이므로 ${correctPair}가 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 돌려주다/반환하다'라는 뜻입니다. 계약 만료 전에 해야 하는 일은 반환이 아니라 갱신이므로 ${correctPair}가 맞습니다.`;
     }
 
     if (value === "remind" && answer === "renew") {
@@ -1353,51 +2058,51 @@
     }
 
     if (value === "supply" && answer === "submit") {
-      return `${inserted}는 '${objectKo}을/를 공급하다'라는 뜻입니다. form이나 receipt는 기관에 내는 제출물이지 공급하는 물건이 아니므로 submit the form/receipts가 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 공급하다'라는 뜻입니다. form이나 receipt는 기관에 내는 제출물이지 공급하는 물건이 아니므로 submit the form/receipts가 맞습니다.`;
     }
 
     if (value === "suggest" && answer === "submit") {
-      return `${inserted}는 '${objectKo}을/를 제안하다'라는 뜻입니다. 신청서나 양식은 제안하는 것이 아니라 제출하는 것이므로 ${correctPair}가 필요합니다.`;
+      return `${inserted}는 '${objectMarked} 제안하다'라는 뜻입니다. 신청서나 양식은 제안하는 것이 아니라 제출하는 것이므로 ${correctPair}가 필요합니다.`;
     }
 
     if (value === "suspend" && answer === "submit") {
-      return `${inserted}는 '${objectKo}을/를 중단하다'라는 뜻이라, 양식이나 영수증을 회사에 내는 상황과 맞지 않습니다. 제출 행위는 ${correctPair}입니다.`;
+      return `${inserted}는 '${objectMarked} 중단하다'라는 뜻이라, 양식이나 영수증을 회사에 내는 상황과 맞지 않습니다. 제출 행위는 ${correctPair}입니다.`;
     }
 
     if (value === "revise" && answer === "review") {
-      return `${inserted}는 '${objectKo}을/를 수정하다'라는 뜻입니다. 서명 전 법무팀이 먼저 하는 일은 내용을 검토하는 것이지 바로 고쳐 쓰는 것이 아니므로 review가 필요합니다.`;
+      return `${inserted}는 '${objectMarked} 수정하다'라는 뜻입니다. 서명 전 법무팀이 먼저 하는 일은 내용을 검토하는 것이지 바로 고쳐 쓰는 것이 아니므로 review가 필요합니다.`;
     }
 
     if (value === "reveal" && answer === "review") {
-      return `${inserted}는 '${objectKo}을/를 드러내다/공개하다'라는 뜻입니다. 계약서를 살펴본다는 의미가 아니므로 ${correctPair}가 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 드러내다/공개하다'라는 뜻입니다. 계약서를 살펴본다는 의미가 아니므로 ${correctPair}가 맞습니다.`;
     }
 
     if (value === "remove" && answer === "review") {
-      return `${inserted}는 '${objectKo}을/를 제거하다'라는 뜻입니다. 계약서 서명 전 필요한 행위는 제거가 아니라 검토이므로 ${correctPair}가 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 제거하다'라는 뜻입니다. 계약서 서명 전 필요한 행위는 제거가 아니라 검토이므로 ${correctPair}가 맞습니다.`;
     }
 
     if (value === "settle" && answer === "schedule") {
-      return `${inserted}는 '${objectKo}을/를 해결하다/정산하다'라는 뜻입니다. visit은 해결하는 대상이 아니라 날짜를 잡는 일정이므로 schedule a visit이 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 해결하다/정산하다'라는 뜻입니다. visit은 해결하는 대상이 아니라 날짜를 잡는 일정이므로 schedule a visit이 맞습니다.`;
     }
 
     if (value === "store" && answer === "schedule") {
-      return `${inserted}는 '${objectKo}을/를 보관하다'라는 뜻입니다. 방문 일정은 저장·보관하는 물건이 아니라 잡는 것이므로 ${correctPair}가 필요합니다.`;
+      return `${inserted}는 '${objectMarked} 보관하다'라는 뜻입니다. 방문 일정은 저장·보관하는 물건이 아니라 잡는 것이므로 ${correctPair}가 필요합니다.`;
     }
 
     if (value === "state" && answer === "schedule") {
-      return `${inserted}는 '${objectKo}을/를 진술하다'라는 뜻입니다. 방문을 진술하는 것이 아니라 일정을 잡는 것이므로 ${correctPair}가 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 진술하다'라는 뜻입니다. 방문을 진술하는 것이 아니라 일정을 잡는 것이므로 ${correctPair}가 맞습니다.`;
     }
 
     if (value === "prevent" && answer === "provide") {
-      return `${inserted}는 '${objectKo}을/를 막다'라는 뜻입니다. instructions/details는 막는 대상이 아니라 제공하는 정보이므로 provide가 필요합니다.`;
+      return `${inserted}는 '${objectMarked} 막다'라는 뜻입니다. instructions/details는 막는 대상이 아니라 제공하는 정보이므로 provide가 필요합니다.`;
     }
 
     if (value === "prove" && answer === "provide") {
-      return `${inserted}는 '${objectKo}을/를 증명하다'라는 뜻입니다. 안내나 세부사항은 증명하는 것이 아니라 제공하는 것이므로 ${correctPair}가 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 증명하다'라는 뜻입니다. 안내나 세부사항은 증명하는 것이 아니라 제공하는 것이므로 ${correctPair}가 맞습니다.`;
     }
 
     if (value === "produce" && answer === "provide") {
-      return `${inserted}는 '${objectKo}을/를 생산하다'라는 뜻입니다. instructions/details는 제조물이 아니라 상대에게 주는 정보이므로 ${correctPair}가 필요합니다.`;
+      return `${inserted}는 '${objectMarked} 생산하다'라는 뜻입니다. instructions/details는 제조물이 아니라 상대에게 주는 정보이므로 ${correctPair}가 필요합니다.`;
     }
 
     if (value === "match" && answer === "meet") {
@@ -1405,11 +2110,11 @@
     }
 
     if (value === "move" && answer === "meet") {
-      return `${inserted}는 '${objectKo}을/를 이동시키다'라는 뜻입니다. 마감일을 이동시키는 것이 아니라 정해진 마감일을 지킨다는 뜻이 필요하므로 ${correctPair}가 맞습니다.`;
+      return `${inserted}는 '${objectMarked} 이동시키다'라는 뜻입니다. 마감일을 이동시키는 것이 아니라 정해진 마감일을 지킨다는 뜻이 필요하므로 ${correctPair}가 맞습니다.`;
     }
 
     if (value === "mark" && answer === "meet") {
-      return `${inserted}는 '${objectKo}을/를 표시하다'라는 뜻입니다. deadline을 표시하는 것이 아니라 기한을 맞추는 것이므로 ${correctPair}가 필요합니다.`;
+      return `${inserted}는 '${objectMarked} 표시하다'라는 뜻입니다. deadline을 표시하는 것이 아니라 기한을 맞추는 것이므로 ${correctPair}가 필요합니다.`;
     }
 
     return `${inserted}를 넣으면 '${objectMarked} ${chosenMeaning}'라는 뜻이 됩니다. 그런데 이 문장의 목적어는 그런 행위의 대상이 아니라 ${correctMeaning}의 대상입니다. 따라서 ${correctPair}가 타동사 + 목적어 구조를 만들고, 의미상으로도 맞습니다.`;
@@ -1467,11 +2172,7 @@
     }
 
     if (category === "connector") {
-      if (answer === "Prior to") return `${value}는 뒤의 submitting the application을 제대로 받을 수 없습니다. 빈칸 뒤가 주어+동사가 있는 절이 아니라 동명사구이므로, 전치사구 Prior to가 문법적으로 연결됩니다.`;
-      if (/^(Although|Even though|Though)$/.test(answer)) return `${value}는 앞뒤 절의 양보 관계를 만들지 못합니다. 뒤 절과 주절이 '비록 ~이지만'의 대조를 이루므로 양보 접속사 ${answer}가 필요합니다.`;
-      if (/^(Because|Since|Now that)$/.test(answer)) return `${value}는 원인절을 이끄는 기능이 약하거나 구조가 맞지 않습니다. 뒤 절이 이유를 제시하므로 원인 접속사 ${answer}가 필요합니다.`;
-      if (/^(Unless|Provided that|as long as|if)$/.test(answer)) return `${value}는 조건절의 의미를 만들지 못합니다. 주절의 성립 조건을 제시하는 자리라서 조건 접속사 ${answer}가 맞습니다.`;
-      return `${value}는 빈칸 뒤 구조나 앞뒤 논리 관계와 맞지 않습니다. 이 문장은 절/구의 형태와 의미 관계를 동시에 만족하는 ${answer}가 필요합니다.`;
+      return connectiveWrongReason(q, value, answer);
     }
 
     if (category === "pronoun") {
@@ -1483,7 +2184,7 @@
     }
 
     if (category === "preposition") {
-      return `${value}는 뒤 명사구와 만드는 시간·장소·대상 관계가 맞지 않습니다. 이 문장에서는 앞 표현과 뒤 명사구가 이루는 고정 구조 또는 의미 관계상 ${answer}가 필요합니다.`;
+      return prepositionWrongReason(q, value, answer);
     }
 
     if (category === "collocation") {
@@ -1534,13 +2235,18 @@
       return `${base} 비교 문제는 신호어를 먼저 봅니다. than은 비교급, the나 of/in/available 같은 범위 표지는 최상급을 요구합니다. 이 문장의 비교 신호와 품사를 동시에 만족하는 답은 '${answer}'입니다.`;
     }
     if (q.category === "connector") {
-      return `${base} 접속사/전치사 문제는 빈칸 뒤가 절인지 구인지 먼저 판단한 뒤, 앞뒤 문장의 논리 관계를 맞춰야 합니다. 구조와 의미를 동시에 만족하는 연결어가 '${answer}'입니다.`;
+      const profile = connectiveProfile(answer);
+      const after = followingAfterBlank(q);
+      const structure = followingStructure(q);
+      return `${base} '${answer}'는 ${profile.type}이고, 보통 뒤에는 ${profile.takes} 형태가 옵니다. 이 문장의 빈칸 뒤는 '${after}'라는 ${structure}입니다. 따라서 먼저 뒤 구조가 절인지 구인지 확인하고, 그다음 앞뒤 의미가 ${profile.meaning}인지 판단해야 합니다. 구조와 의미를 동시에 만족하는 연결어가 '${answer}'입니다.`;
     }
     if (q.category === "pronoun") {
       return `${base} 대명사 문제는 빈칸 뒤 명사의 유무, 주어와 목적어의 관계, 단수/복수, 소유격 여부를 확인해야 합니다. 이 문장에서 요구되는 격과 수를 만족하는 형태가 '${answer}'입니다.`;
     }
     if (q.category === "preposition") {
-      return `${base} 전치사는 뒤 명사구와 앞 표현의 관계를 정합니다. 시간·장소·대상·원인 중 어떤 관계인지와 고정 표현을 함께 봐야 하므로 '${answer}'가 맞습니다.`;
+      const profile = prepositionProfile(answer);
+      const after = followingAfterBlank(q);
+      return `${base} '${answer}'는 ${profile.type}이고 기본 의미는 '${profile.meaning}'입니다. 빈칸 뒤 명사구는 '${after}'입니다. 전치사 문제는 뒤 명사구의 형태보다, 앞 표현과 뒤 명사구가 어떤 관계를 맺는지를 묻는 경우가 많습니다. 여기서는 ${profile.note} 그래서 '${answer}'가 문장의 시간·장소·대상 관계를 정확하게 완성합니다.`;
     }
     if (q.category === "collocation") {
       return `빈칸 뒤 목적어가 어떤 동사를 요구하는지 보는 문제입니다. 이 문장의 동사는 뒤 명사를 직접 목적어로 취해야 하며, 의미상 그 목적어에 수행할 수 있는 행위를 나타내야 합니다. '${answer}'는 해당 목적어를 취하는 타동사 결합을 만들지만, 다른 선택지는 목적어의 의미역이나 타동사 구조가 맞지 않습니다.`;
@@ -1562,13 +2268,22 @@
     };
   }
 
+  function calibratedDifficulty(q) {
+    const level = q.difficulty || "medium";
+    if ((q.category === "connector" || q.category === "collocation") && level === "easy") return "medium";
+    if ((q.category === "connector" || q.category === "collocation") && level === "medium") return "hard";
+    if ((q.category === "preposition" || q.category === "comparison" || q.category === "verb_form") && level === "easy") return "medium";
+    return level;
+  }
+
   const TARGET_TOTAL = 1000;
   const shuffled = shuffle(bank, 950).slice(0, TARGET_TOTAL).map((q, idx) => {
     const enhancedChoices = sanitizeChoices(q).map(choice => ({
       ...choice,
       wrongReason: choice.correct ? "" : wrongReasonFor({ ...q, choices: sanitizeChoices(q) }, choice)
     }));
-    const enhancedQuestion = { ...q, choices: enhancedChoices };
+    const difficulty = calibratedDifficulty(q);
+    const enhancedQuestion = { ...q, difficulty, difficultyLabel: DIFFICULTY_LABELS[difficulty], choices: enhancedChoices };
     const details = detailedExplanation(enhancedQuestion);
     return {
       ...enhancedQuestion,
